@@ -1,0 +1,33 @@
+#include <SoftwareSerial.h>
+SoftwareSerial mySerial(11, 10);
+void setup() {
+  Serial.begin(9600);
+  while (!Serial) {}
+  Serial.println("Bye");
+  mySerial.begin(9600);
+  while (!mySerial) {}
+  Serial.println("start");
+  pinMode(4, OUTPUT);            
+}
+
+void display(int num) {
+  String arr = "00000000";
+  switch(num) {
+    case 1: {
+      arr = "00100000";     
+    }         
+  }  
+  for (int i=0; i < 8; i++) {
+    char val = arr[i];
+    digitalWrite(i + 2, val  - '0');
+  }  
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  if (mySerial.available()) {
+    int num = mySerial.read();
+    Serial.print(num);
+    display(num);
+  }
+}
